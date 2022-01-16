@@ -81,7 +81,7 @@ const DeviceInfo = sequelize.define('device_info', {
         allowNull: false
     },
     description: {
-        type: DataTypes.TEXTSTRING,
+        type: DataTypes.STRING,
         allowNull: false
     }
 });
