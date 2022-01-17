@@ -4,6 +4,7 @@ const sequelize = require('./db');
 const models = require('./models/models');
 const cors = require('cors');
 const router = require('./routes/index');
+const errorHandler = require('./middleware/ErrorHandlingMiddleware');
 
 const PORT = process.env.PORT || 5432; 
 
@@ -13,6 +14,12 @@ app.use(cors());
 app.use(express.json());
 // подключаем роутинг из переменной router
 app.use('/api', router);
+
+/*
+* вызов обработчика ошибки должен быть в конце. в нём не вызывался next,
+* так как после него нет других middleware
+* */
+app.use(errorHandler);
 
 app.get('/', (req, res) => {
     res.status(200).json(
