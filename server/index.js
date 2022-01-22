@@ -3,16 +3,19 @@ const express = require('express');
 const sequelize = require('./db');
 const models = require('./models/models');
 const cors = require('cors');
+const fileupload = require('express-fileupload');
 const router = require('./routes/index');
 const errorHandler = require('./middleware/ErrorHandlingMiddleware');
+const path = require('path');
 
-const PORT = process.env.PORT || 5432; 
+const PORT = process.env.PORT || 5000; 
 
 const app = express();
+
 app.use(cors());
-// для парсинга данных в json:
 app.use(express.json());
-// подключаем роутинг из переменной router
+app.use(express.static(path.resolve(__dirname, 'static')));
+app.use(fileupload({}));
 app.use('/api', router);
 
 /*
