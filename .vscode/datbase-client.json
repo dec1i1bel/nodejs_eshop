@@ -1,30 +1,16 @@
 {
     "database.connections": {
         "1642834850314": {
-            "host": "127.0.0.1",
-            "dbPath": "",
-            "port": "5433",
-            "user": "postgres",
-            "authType": "default",
-            "password": "root",
-            "encoding": "utf8",
-            "clientKeyPath": null,
-            "clientCertPath": null,
-            "caPath": null,
-            "database": "online_store",
-            "useSSL": false,
-            "usingSSH": false,
-            "showHidden": false,
-            "includeDatabases": "online_store",
-            "dbType": "PostgreSQL",
-            "encrypt": false,
-            "isCluster": false,
-            "connectionUrl": "",
-            "srv": false,
-            "esAuth": "none",
-            "global": false,
             "key": "1642834850314",
+            "host": "127.0.0.1",
+            "port": "5432",
+            "user": "postgres",
+            "password": "root",
             "timezone": "+00:00",
+            "useSSL": false,
+            "isCluster": false,
+            "clientCertPath": null,
+            "clientKeyPath": null,
             "ssh": {
                 "host": "",
                 "privateKeyPath": "C:\\Users\\vbala\\.ssh\\id_rsa",
@@ -34,10 +20,24 @@
                 "connectTimeout": 10000,
                 "algorithms": {
                     "cipher": []
-                }
+                },
+                "tunnelPort": null
             },
-            "name": "estore",
-            "connectionKey": "database.connections"
+            "usingSSH": false,
+            "esAuth": "none",
+            "encoding": "utf8",
+            "showHidden": false,
+            "connectionKey": "database.connections",
+            "global": false,
+            "dbType": "PostgreSQL",
+            "connectionUrl": "",
+            "encrypt": false,
+            "dbPath": "",
+            "authType": "default",
+            "includeDatabases": "online_store",
+            "database": "online_store",
+            "name": "online_store",
+            "tooltip": "Host: 127.0.0.1, Port: 5433"
         }
     }
 }
