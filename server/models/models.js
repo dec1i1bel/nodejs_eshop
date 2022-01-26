@@ -70,7 +70,7 @@ const Device = sequelize.define('device', {
     }
 });
 
-const DeviceInfo = sequelize.define('device_info', {
+const DeviceInfo = sequelize.define('device_info', { 
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -154,7 +154,7 @@ BasketDevice.belongsTo(Basket);
 Device.hasMany(BasketDevice);
 BasketDevice.belongsTo(Device);
 
-Device.hasMany(DeviceInfo);
+Device.hasMany(DeviceInfo, {as: 'info'});
 DeviceInfo.belongsTo(Device);
 
 Type.hasMany(Device);

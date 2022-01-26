@@ -1,17 +1,29 @@
 const uuid = require('uuid');
 const path = require('path');
-const {Device} = require('../models/models');
+const {Device, DeviceInfo} = require('../models/models');
 const ApiError = require('../error/ApiError');
+// const { json } = require('sequelize/dist');
 
 class DeviceController {
     async create(req, res, next) {
         try {
             const {name, price, brandId, typeId, info} = req.body;
             const {img} = req.files;
-
             let filename = uuid.v4() + '.jpg';
-            
             img.mv(path.resolve(__dirname, '..', 'static', filename));
+
+            if (typeof info !== 'undefined') {
+                // info приходит в виде строки, поэтому сначала парсим его в json,
+                // а потом переводим в js-объект
+                info = JSON.parse(info);
+                info.forEach(i => {
+                    DeviceInfo.create({
+                        title: i.title,
+                        description: i.description,
+                        deviceId: device.id
+                    })
+                });
+            }
     
             const device = await Device.create({name, price, brandId, typeId, img: filename});
 
@@ -35,24 +47,22 @@ class DeviceController {
     
             let devices;
             
-            // если в запросе нет ни бренда, ни типа
+            // запросы к модели в зависимости от http-запроса
+
             if ((typeof brandId === 'undefined') && (typeof typeId === 'undefined')) {
-                devices = await Device.findAll({limit: itemsLimit});
+                devices = await Device.findAndCountAll({limit: itemsLimit, offset: offset});
             }
     
-            // если только id бренда:
             if ((typeof brandId !== 'undefined') && (typeof typeId === 'undefined')) {
-                devices = await Device.findAll({where:{brandId}, itemsLimit, offset});
+                devices = await Device.findAndCountAll({where:{brandId}, itemsLimit, offset});
             }
     
-            // если только id типа:
             if ((typeof brandId === 'undefined') && (typeof typeId !== 'undefined')) {
-                devices = await Device.findAll({where:{typeId}, itemsLimit, offset});
+                devices = await Device.findAndCountAll({where:{typeId}, itemsLimit, offset});
             }
     
-            // если id типа и бренда:
             if ((typeof brandId === 'undefined') && (typeof typeId !== 'undefined')) {
-                devices = await Device.findAll({where:{typeId, brandId}, itemsLimit, offset});
+                devices = await Device.findAndCountAll({where:{typeId, brandId}, itemsLimit, offset});
             }
     
             return res.json(devices);
@@ -62,7 +72,17 @@ class DeviceController {
     }
 
     async getOne(req, res) {
+        const {id} = req.params;
 
+        // в запросе сразу тянем его DeviceInfo (параметр include), чтобы иметь возможность вывести его на странице
+        const device = await Device.findOne(
+            {
+                where: {id},
+                include: [{model: DeviceInfo, as: 'info'}]
+            }
+        )
+
+        return res.json(device);
     }
 }
 
